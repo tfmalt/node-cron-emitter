@@ -1,3 +1,6 @@
+[![Code Climate](https://codeclimate.com/github/tfmalt/node-cron-emitter/badges/gpa.svg)](https://codeclimate.com/github/tfmalt/node-cron-emitter)
+[![Test Coverage](https://codeclimate.com/github/tfmalt/node-cron-emitter/badges/coverage.svg)](https://codeclimate.com/github/tfmalt/node-cron-emitter)
+
 ## node-cron-emitter
 
 Node.js event emitter that uses crontab instructions to register events 
