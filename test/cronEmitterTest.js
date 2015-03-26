@@ -71,6 +71,28 @@ describe('Create object', function() {
 
             cm.add('* * * * * *', "aSecond");
 
-        })
+        });
+
+        it('should respect stop time if given in options', function(done) {
+            var end = new Date((new Date()).getTime()+7000);
+            cm.add("*/2 * * * * *", "every_second", {
+                endDate: end
+            });
+
+            var counter = 0;
+            var last = null;
+            try {
+                while (last = cm.intervals['every_second'].next()) {
+                    counter++;
+                }
+            }
+            catch (e) {
+                e.should.be.instanceOf(Error);
+                expect(last).to.be.instanceOf(Date);
+                expect(last).to.not.be.greaterThan(end);
+                expect(counter).to.equal(3);
+                done();
+            }
+        });
     });
 });
