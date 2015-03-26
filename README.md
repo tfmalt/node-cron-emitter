@@ -1,6 +1,8 @@
+[![npm version](https://badge.fury.io/js/cron-emitter.svg)](http://badge.fury.io/js/cron-emitter)
 [![Build Status](https://travis-ci.org/tfmalt/node-cron-emitter.svg?branch=master)](https://travis-ci.org/tfmalt/node-cron-emitter)
 [![Code Climate](https://codeclimate.com/github/tfmalt/node-cron-emitter/badges/gpa.svg)](https://codeclimate.com/github/tfmalt/node-cron-emitter)
 [![Test Coverage](https://codeclimate.com/github/tfmalt/node-cron-emitter/badges/coverage.svg)](https://codeclimate.com/github/tfmalt/node-cron-emitter)
+[![Dependency Status](https://david-dm.org/tfmalt/node-cron-emitter.svg)](https://david-dm.org/tfmalt/node-cron-emitter)
 
 ## node-cron-emitter
 
