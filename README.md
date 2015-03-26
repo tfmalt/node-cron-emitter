@@ -23,6 +23,12 @@ npm install cron-emitter
 ```
   
 ### Usage
+See [cron-parser](https://github.com/harrisiirak/cron-parser) for simple 
+instructons to the crontab syntax. If you're on a Linux or OS X computer type
+```bash
+man crontab
+```
+
 
 ```javascript
 var cron = require('cron-emitter');
