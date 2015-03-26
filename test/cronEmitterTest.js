@@ -7,13 +7,12 @@
  */
 
 var chai   = require('chai'),
-    should = chai.should(),
     assert = chai.assert,
     expect = chai.expect,
-    sinon  = require('sinon'),
     events = require('events'),
     cron   = require('../lib/cronEmitter');
 
+chai.should();
 
 describe('Create object', function() {
     it('should return a new CronEmitter object', function() {
@@ -82,7 +81,7 @@ describe('Create object', function() {
             var counter = 0;
             var last = null;
             try {
-                while (last = cm.intervals['every_second'].next()) {
+                while (last = cm._crontab['every_second'].next()) {
                     counter++;
                 }
             }
@@ -94,5 +93,77 @@ describe('Create object', function() {
                 done();
             }
         });
+    });
+
+    describe('getEventList', function() {
+        "use strict";
+        var emitter;
+        before(function() {
+            emitter = new cron.CronEmitter();
+        });
+
+        it('should return a correct list of events', function() {
+            var list = emitter.getEventList();
+            expect(list).to.be.instanceOf(Object);
+            expect(Object.keys(list).length).to.equal(0);
+
+            emitter.add("* * * * *", "every_minute");
+
+            var nyList = emitter.getEventList();
+            expect(Object.keys(nyList).length).to.equal(1);
+
+            expect(nyList.hasOwnProperty("every_minute")).to.be.true;
+
+        });
+
+        after(function() {
+            emitter = undefined;
+        });
+    });
+
+    describe('remove', function() {
+        "use strict";
+        var em;
+        before(function() {
+            em = new cron.CronEmitter();
+            em.add('* * * * * *', "every_second");
+            em.add('0 * * * *', "every_hour");
+        });
+
+        it('should have correct initial content', function() {
+            expect(Object.keys(em.getEventList()).length).to.equal(2);
+            expect(Object.keys(em.getEventList())).to.deep.equal([
+                "every_second", "every_hour"
+            ]);
+        });
+
+        it('should delete content correctly', function() {
+            expect(em.remove("every_second")).to.be.true;
+            expect(Object.keys(em.getEventList())).to.deep.equal([
+                "every_hour"
+            ]);
+        });
+
+        it('should handle being asked to delete something non existing', function() {
+            expect(em.remove.bind(em, "not_here")).to.throw(TypeError, /No such event/);
+        });
+    });
+
+    describe('hasEvent', function() {
+        "use strict";
+        var em;
+        before(function() {
+            em = new cron.CronEmitter();
+            em.add('0 0 31 * *', 'everyMonth');
+        });
+
+        it('should return true when event exist', function() {
+            em.hasEvent('everyMonth').should.be.true;
+        });
+
+        it('should return false when event does not', function() {
+            em.hasEvent('right_now').should.be.false;
+        });
+
     });
 });
