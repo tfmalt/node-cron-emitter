@@ -7,8 +7,9 @@
 ## node-cron-emitter
 
 Node.js event emitter that uses crontab instructions to register events 
-to be emitted. This module uses [cron-parser](https://github.com/harrisiirak/cron-parser)
-parse the crontab instructions syntax. See also 
+to be emitted at regular intervals. This module uses 
+[cron-parser](https://github.com/harrisiirak/cron-parser)
+to parse the crontab instructions. See also 
 [node-cron](https://github.com/ncb000gt/node-cron) for a similar project with
 a more traditional node.js callback approach.
 
@@ -20,8 +21,8 @@ to implement the event listener pattern, to achieve capabilities found in the
 
 This enables us to write highly decoupled and scalable code with
 lower complexity per function than traditional callback driven code. We can delegate
-responsibility for dealing with events to possibly many different subsystems
-all listening to the same event notifications.
+responsibility for dealing with events to as many different subsystems as we 
+want, all listening to the same event notifications.
 
 ### Install
 ```bash
