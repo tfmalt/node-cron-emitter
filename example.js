@@ -5,7 +5,7 @@
  * @copyright 2015 (c) tm
  */
 
-var cron = require('./lib/cronEmitter');
+var cron = require('cron-emitter');
 
 var emitter = new cron.CronEmitter();
 
