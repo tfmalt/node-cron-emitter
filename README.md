@@ -4,7 +4,7 @@ Node.js event emitter that uses crontab instructions to register events
 to be emitted. This module uses [cron-parser](https://github.com/harrisiirak/cron-parser)
 parse the crontab instructions syntax. See also 
 [node-cron](https://github.com/ncb000gt/node-cron) for a similar project with
-a ordinary node.js callback approach.
+a more traditional node.js callback approach.
 
 The main difference between this Library and 
 [node-cron](https://github.com/ncb000gt/node-cron) is that this library aims 
@@ -29,12 +29,12 @@ var cron = require('cron-emitter');
 
 var emitter = new cron.CronEmitter();
 
-emitter.add("*/3 * * * * *", "three_secs");
-emitter.add("*/10 * * * * *", "ten_secs");
-emitter.add("0 * * * * *", "every_minute");
-emitter.add("0 0 0 * * *", "at_midnight");
+emitter.add("*/3 * * * * *",  "every_three_seconds");
+emitter.add("*/10 * * * * *", "every_ten_seconds");
+emitter.add("0 * * * * *",    "every_minute");
+emitter.add("0 0 0 * * *",    "at_midnight");
 
-emitter.on('ten_secs', function() {
+emitter.on('every_ten_secs', function() {
     console.log("EVENT: Got ten seconds event!");
 });
 
