@@ -5,27 +5,38 @@
  * @copyright 2015 (c) tm
  */
 
-var cron = require('./lib/cronEmitter');
+var CronEmitter = require('cron-emitter');
 
-var emitter = new cron.CronEmitter();
+var emitter = new CronEmitter();
 var now     = new Date();
 
-emitter.add('*/3  * * * * *', 'three_secs');
-emitter.add('*/10 * * * * *', 'ten_secs');
+emitter.add('*/3  * * * * *', 'every_three_seconds');
+emitter.add('*/10 * * * * *', 'every_ten_seconds');
 emitter.add('0    * * * * *', 'every_minute');
-emitter.add('* * * * * *', "every_second_stop", {
+emitter.add('* * * * * *',    "every_second_stop", {
     endDate: new Date(now.getTime()+5500)
 });
+
 console.log("done");
 
-emitter.on('ten_secs', function() {
+emitter.on('every_three_seconds', function() {
     "use strict";
-    console.log("EVENT: Got ten seconds event!");
+    console.log("EVENT: Got every three seconds event.");
+});
+
+emitter.on('every_ten_seconds', function() {
+    "use strict";
+    console.log("EVENT: Got ten seconds event.");
+
+    if (emitter.hasEvent("every_three_seconds")) {
+        console.log("  Stopping every_three_seconds.");
+        emitter.remove("every_three_seconds");
+    }
 });
 
 var counter = 0;
 emitter.on("every_second_stop", function() {
     "use strict";
     counter++;
-    console.log("EVENT: got second: ", counter);
+    console.log("EVENT: got every second event: ", counter);
 });
