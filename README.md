@@ -4,7 +4,7 @@
 [![Test Coverage](https://codeclimate.com/github/tfmalt/node-cron-emitter/badges/coverage.svg)](https://codeclimate.com/github/tfmalt/node-cron-emitter)
 [![Dependency Status](https://david-dm.org/tfmalt/node-cron-emitter.svg)](https://david-dm.org/tfmalt/node-cron-emitter)
 
-## node-cron-emitter
+## cron-emitter
 
 Node.js event emitter that uses crontab instructions to register events 
 to be emitted at regular intervals. This module uses 
@@ -32,27 +32,44 @@ npm install cron-emitter
 ### Usage
 See [cron-parser](https://github.com/harrisiirak/cron-parser) for a simple 
 introduction to the crontab syntax. 
-If you're on a Linux or OS X computer type
+If you"re on a Linux or OS X computer type
 ```bash
 man crontab
 ```
 
 ### Example
 ```javascript
-var cron = require('cron-emitter');
+var CronEmitter = require("cron-emitter");
 
-var emitter = new cron.CronEmitter();
+var emitter = new CronEmitter();
+var now     = new Date();
 
-emitter.add("*/3 * * * * *",  "every_three_seconds");
+emitter.add("*/3  * * * * *", "every_three_seconds");
 emitter.add("*/10 * * * * *", "every_ten_seconds");
-emitter.add("0 * * * * *",    "every_minute");
-emitter.add("0 0 0 * * *",    "at_midnight");
-
-emitter.on('every_ten_secs', function() {
-    console.log("EVENT: Got ten seconds event!");
+emitter.add("0    * * * * *", "every_minute");
+emitter.add("* * * * * *",    "every_second_stop", {
+    endDate: new Date(now.getTime()+5500)
 });
 
-emitter.on('at_midnight', function() {
-    console.log("EVENT: Do something at midnight every day
+emitter.on("every_three_seconds", function() {
+    "use strict";
+    console.log("EVENT: Got every three seconds event.");
+});
+
+emitter.on("every_ten_seconds", function() {
+    "use strict";
+    console.log("EVENT: Got ten seconds event.");
+
+    if (emitter.hasEvent("every_three_seconds")) {
+        console.log("  Stopping every_three_seconds.");
+        emitter.remove("every_three_seconds");
+    }
+});
+
+var counter = 0;
+emitter.on("every_second_stop", function() {
+    "use strict";
+    counter++;
+    console.log("EVENT: got every second event: ", counter);
 });
 ```
