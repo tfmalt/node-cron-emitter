@@ -39,7 +39,7 @@ man crontab
 
 ### Example
 ```javascript
-var CronEmitter = require("cron-emitter");
+var CronEmitter = require("cron-emitter").CronEmitter;
 
 var emitter = new CronEmitter();
 var now     = new Date();
