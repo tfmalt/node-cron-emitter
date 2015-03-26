@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/tfmalt/node-cron-emitter.svg?branch=master)](https://travis-ci.org/tfmalt/node-cron-emitter)
 [![Code Climate](https://codeclimate.com/github/tfmalt/node-cron-emitter/badges/gpa.svg)](https://codeclimate.com/github/tfmalt/node-cron-emitter)
 [![Test Coverage](https://codeclimate.com/github/tfmalt/node-cron-emitter/badges/coverage.svg)](https://codeclimate.com/github/tfmalt/node-cron-emitter)
 
