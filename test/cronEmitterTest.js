@@ -41,10 +41,6 @@ describe('Create object', function() {
             cm.add.bind(cm, '*/3 * * * * *').should.throw(TypeError, /two arguments/);
         });
 
-        it('should throw TypeError when called with invalid second argument', function() {
-            cm.add.bind(cm, '*/3 * * * * *', "352").should.throw(TypeError, /second argument/);
-        });
-
         it('should throw TypeError when called without illegal cron argument', function() {
             cm.add.bind(cm, 'ninja', 'ninja').should.throw(Error, /first argument/);
         });
