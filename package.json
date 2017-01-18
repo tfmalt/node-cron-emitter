@@ -25,13 +25,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "cron-parser": "^1.0.1"
+    "cron-parser": "^2.3.0"
   },
   "devDependencies": {
-    "chai": "^3.4.1",
-    "codeclimate-test-reporter": "0.1.1",
+    "chai": "^3.5.1",
+    "codeclimate-test-reporter": "^0.4",
     "istanbul": "^0.4",
-    "mocha": "^2.3.3",
+    "mocha": "^3.2",
     "sinon": "^1.17.2"
   }
 }
