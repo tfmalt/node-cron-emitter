@@ -1,6 +1,6 @@
 {
   "name": "cron-emitter",
-  "version": "0.2.2",
+  "version": "0.3.1",
   "description": "An event emitter for registering scheduled events in crontab format",
   "main": "lib/cron-emitter.js",
   "private": false,
