@@ -1,0 +1,12 @@
+{
+  "plugins": [
+    "mocha"
+  ],
+  "rules": {
+    "max-nested-callbacks": [1, 5],
+    "no-unused-expressions": "off"
+  },
+  "env": {
+    "mocha": true
+  }
+}
