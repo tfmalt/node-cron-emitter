@@ -39,6 +39,10 @@ describe('Create object', () => {
       cm.add.bind(cm, '*/3 * * * * *').should.throw(TypeError, /two arguments/);
     });
 
+    it('should throw Typeerror when called with illegal second argument', () => {
+      cm.add.bind(cm, '* * * * * *', []).should.throw(TypeError, /second argument/);
+    });
+
     it('should throw Error when called without illegal cron argument', () => {
       cm.add.bind(cm, 'ninja', 'ninja').should.throw(Error);
     });
@@ -67,7 +71,7 @@ describe('Create object', () => {
     });
 
     it('should respect stop time if given in options', function(done) {
-      var end = new Date((new Date()).getTime() + 7000);
+      var end = new Date((new Date()).getTime() + 8000);
       cm.add("*/2 * * * * *", "every_second", {
         endDate: end
       });
@@ -79,7 +83,6 @@ describe('Create object', () => {
           counter++;
         }
       } catch (e) {
-        console.log(e.message);
         e.should.be.instanceOf(Error);
         expect(last).to.be.a('object');
         expect(last.getTime()).to.not.be.greaterThan(end.getTime());
