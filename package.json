@@ -2,13 +2,13 @@
   "name": "cron-emitter",
   "version": "0.2.2",
   "description": "An event emitter for registering scheduled events in crontab format",
-  "main": "lib/cronEmitter.js",
+  "main": "lib/cron-emitter.js",
   "private": false,
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "istanbul cover _mocha -- -R spec"
+    "test": "NODE_ENV=test nyc --reporter=text --reporter=lcov mocha **/*test.js"
   },
   "repository": {
     "type": "git",
@@ -21,17 +21,20 @@
     "emitter"
   ],
   "author": {
-    "name": "Thomas Malt"
+    "name": "Thomas Malt",
+    "email": "<thomas@malt.no>"
   },
   "license": "MIT",
   "dependencies": {
-    "cron-parser": "^2.3.0"
+    "cron-parser": "^2.3.1"
   },
   "devDependencies": {
-    "chai": "^3.5",
-    "codeclimate-test-reporter": "^0.4",
-    "istanbul": "^0.4",
-    "mocha": "^3.2",
+    "chai": "^3.5.0",
+    "codeclimate-test-reporter": "^0.4.1",
+    "eslint": "^3.13.1",
+    "eslint-plugin-mocha": "^4.9.0",
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
     "sinon": "^1.17.2"
   }
 }
