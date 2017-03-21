@@ -3,3 +3,4 @@ node_modules
 coverage
 wallaby.js
 .nyc_output
+npm-debug.log
