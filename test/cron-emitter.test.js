@@ -6,13 +6,14 @@
  * @copyright 2015-2017 (c) Thomas Malt
  */
 
+"use strict";
+
 const chai = require('chai');
 const assert = chai.assert;
 const expect = chai.expect;
 const events = require('events');
 const timers = require('timers');
 const CronEmitter = require('../lib/cron-emitter');
-
 chai.should();
 
 describe('Create object', () => {
