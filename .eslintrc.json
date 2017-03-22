@@ -25,6 +25,8 @@
     ],
     "no-console": "off",
     "prefer-const": "error",
-    "no-var": "error"
+    "no-var": "error",
+    "require-jsdoc": "error",
+    "valid-jsdoc": ["error", {"requireReturn": false}]
   }
 }
