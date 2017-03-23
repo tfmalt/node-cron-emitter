@@ -24,6 +24,8 @@ lower complexity per function than callback driven code. You can delegate
 responsibility for dealing with events to as many different subsystems as we
 want, all listening to the same event notifications.
 
+## Table of contents
+
 * [Install](#Install)
 * [Crontab syntax](#Crontab-syntax)
 * [Usage](#Usage)
@@ -31,6 +33,10 @@ want, all listening to the same event notifications.
   * [Adding an event](#Adding-an-event)
   * [Options](#Options)
 * [API](#API)
+  * [constructor](#new_CronEmitter_new)
+  * [add](#CronEmitter+Add)
+  * [remove](#CronEmitter+remove)
+  * [getEventList](#CronEmitter+getEventList)
 * [Example](#Example)
 
 ## Install
