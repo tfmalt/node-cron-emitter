@@ -123,7 +123,7 @@ describe('Create object', () => {
     });
 
     it('should delete content correctly', () => {
-      expect(em.remove("every_second")).to.be.true;
+      expect(em.remove("every_second")).to.be.instanceof(CronEmitter);
       expect(Object.keys(em.getEventList())).to.deep.equal([
         "every_hour"
       ]);
