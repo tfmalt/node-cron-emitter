@@ -25,10 +25,10 @@ responsibility for dealing with events to as many different subsystems as we
 want, all listening to the same event notifications.
 
 * [Install](#Install)
-* [Crontab syntax](#Crontab syntax)
+* [Crontab syntax](#Crontab-syntax)
 * [Usage](#Usage)
-  * [Creating an Object](#Creating an object)
-  * [Adding an event](#Adding an event)
+  * [Creating an Object](#Creating-an-object)
+  * [Adding an event](#Adding-an-event)
   * [Options](#Options)
 * [API](#API)
 * [Example](#Example)
@@ -59,9 +59,20 @@ const emitter     = new CronEmitter();
 emitter.add('0 */30 * * * *', 'every_thirty_minutes');
 ```
 ### Options
-options
+
+CronEmitter exposes the [same options as cron-parser](https://github.com/harrisiirak/cron-parser#options) to provide
+a start date and an end date for when events should be emitted:
+
+```javascript
+emitter.add('0 0 */2 * * *', 'every_two_hours', {
+  currentDate: new Date(),
+  endDate: '2017-05-31'
+});
+```
 
 ## API
+
+<a name="new_CronEmitter_new"></a>
 
 ### new CronEmitter()
 Return a new CronEmitter object
@@ -70,15 +81,17 @@ Return a new CronEmitter object
 
 ### cronEmitter.add(crontab, name, options) ⇒ <code>Timeout</code>
 Adds a new event to the list of events to be emitted.
+CronEmitter exposes the same options as cron-parser to provide a
+start date and an end date for when events should be emitted:
 
-**Kind**: instance method of <code>[CronEmitter](#CronEmitter)</code>
-**Returns**: <code>Timeout</code> - Timeout from the setTimeout function.
-**See**: https://www.npmjs.com/package/cron-parser
+- **Kind**: instance method of <code>[CronEmitter](#CronEmitter)</code>
+- **Returns**: <code>Timeout</code> - Timeout from the setTimeout function.
+- **See**: https://www.npmjs.com/package/cron-parser
 
-| Param   | Type | Description |
-| ------- | ------------------- | --- |
+| Param | Type | Description |
+| --- | --- | --- |
 | crontab | <code>string</code> | the crontab declaration |
-| name    | <code>string</code> | the name of the event you want to emit. |
+| name | <code>string</code> | the name of the event you want to emit. |
 | options | <code>object</code> | an object with options to cron-parser |
 
 <a name="CronEmitter+remove"></a>
@@ -86,11 +99,11 @@ Adds a new event to the list of events to be emitted.
 ### cronEmitter.remove(name) ⇒ <code>boolean</code>
 Remove an event from the list of events
 
-**Kind**: instance method of <code>[CronEmitter](#CronEmitter)</code>
-**Returns**: <code>boolean</code> - true when successful
-**Throws**:
+- **Kind**: instance method of <code>[CronEmitter](#CronEmitter)</code>
+- **Returns**: <code>boolean</code> - true when successful
+- **Throws**:
 
-- TypeError
+  - TypeError
 
 
 | Param | Type | Description |
@@ -102,15 +115,19 @@ Remove an event from the list of events
 ### cronEmitter.getEventList() ⇒ <code>object</code>
 Returns object with all the registered emitters
 
-**Kind**: instance method of <code>[CronEmitter](#CronEmitter)</code>
-**Returns**: <code>object</code> - the list of events.
+- **Kind**: instance method of <code>[CronEmitter](#CronEmitter)</code>
+- **Returns**: <code>object</code> - the list of events.
 
 ## Example
 
-#### Creating an object
 
-#### Adding events
 ```javascript
+const CronEmitter = require('../lib/cron-emitter');
+const emitter     = new CronEmitter();
+
+const now       = () => (new Date()).toJSON();
+const increment = (counter = 0) => (counter + 1);
+
 emitter.add('*/3  * * * * *', 'every_three_seconds');
 emitter.add('*/10 * * * * *', 'every_ten_seconds');
 emitter.add('0 * * * * *',    'every_minute');
@@ -119,11 +136,6 @@ emitter.add('0 */30 * * * *', 'every_thirty_minutes');
 emitter.add('* * * * * *',    'every_second_stop', {
   endDate: new Date(Date.now() + 10500)
 });
-```
-
-#### Handling the events
-```javascript
-const now  = () => (new Date()).toJSON();
 
 console.log(now(), "==> Done setting up events");
 
