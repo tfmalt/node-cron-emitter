@@ -12,7 +12,6 @@ const chai = require('chai');
 const assert = chai.assert;
 const expect = chai.expect;
 const events = require('events');
-const timers = require('timers');
 const CronEmitter = require('../lib/cron-emitter');
 chai.should();
 
@@ -55,12 +54,12 @@ describe('Create object', () => {
     it('should emit event after one second', function(done) {
       this.timeout(4000);
       let counter = 0;
-      let errTimeout = setTimeout(() => {
+      const errTimeout = setTimeout(() => {
         assert.fail("Did not get event");
       }, 3000);
       cm.on('aSecond', () => {
         counter++;
-        if (counter > 2) {
+        if (counter === 3) {
           clearTimeout(errTimeout);
           assert(true, "Got event");
           done();
@@ -71,43 +70,32 @@ describe('Create object', () => {
 
     });
 
-    it('should respect stop time if given in options', function(done) {
-      var end = new Date((new Date()).getTime() + 8000);
-      cm.add("*/2 * * * * *", "every_second", {
-        endDate: end
-      });
-
-      var counter = 0;
-      var last = null;
-      try {
-        while (last = cm.crontab['every_second'].next()) {
-          counter++;
+    it('should handle end of event series gracefully', function(done) {
+      const end = new Date(Date.now() + 1100);
+      cm.add('* * * * * *', 'end_event_gracefully', {endDate: end});
+      cm.on('ended', (name) => {
+        if (name === 'end_event_gracefully') {
+          expect(name).to.equal('end_event_gracefully');
+          done();
         }
-      } catch (e) {
-        e.should.be.instanceOf(Error);
-        expect(last).to.be.a('object');
-        expect(last.getTime()).to.not.be.greaterThan(end.getTime());
-        expect(counter).to.equal(3);
-        done();
-      }
+      });
     });
   });
 
   describe('getEventList', () => {
-    "use strict";
-    var emitter;
+    let emitter;
     before(() => {
       emitter = new CronEmitter();
     });
 
     it('should return a correct list of events', () => {
-      var list = emitter.getEventList();
+      const list = emitter.getEventList();
       expect(list).to.be.instanceOf(Object);
       expect(Object.keys(list).length).to.equal(0);
 
       emitter.add("* * * * *", "every_minute");
 
-      var nyList = emitter.getEventList();
+      const nyList = emitter.getEventList();
       expect(Object.keys(nyList).length).to.equal(1);
 
       expect(nyList.hasOwnProperty("every_minute")).to.be.true;
@@ -120,8 +108,7 @@ describe('Create object', () => {
   });
 
   describe('remove', () => {
-    "use strict";
-    var em;
+    let em;
     before(() => {
       em = new CronEmitter();
       em.add('* * * * * *', "every_second");
@@ -148,8 +135,7 @@ describe('Create object', () => {
   });
 
   describe('hasEvent', () => {
-    "use strict";
-    var em;
+    let em;
     before(() => {
       em = new CronEmitter();
       em.add('0 0 31 * *', 'everyMonth');
