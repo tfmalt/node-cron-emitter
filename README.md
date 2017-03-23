@@ -4,72 +4,170 @@
 [![Test Coverage](https://codeclimate.com/github/tfmalt/node-cron-emitter/badges/coverage.svg)](https://codeclimate.com/github/tfmalt/node-cron-emitter)
 [![Dependency Status](https://david-dm.org/tfmalt/node-cron-emitter.svg)](https://david-dm.org/tfmalt/node-cron-emitter)
 
-## cron-emitter
+# cron-emitter
 
-Node.js event emitter that uses crontab instructions to register events 
-to be emitted at regular intervals. This module uses 
+This is an event emitter that uses crontab instructions to register the events
+to be emitted at regular intervals. This module uses
 [cron-parser](https://github.com/harrisiirak/cron-parser)
-to parse the crontab instructions. See also 
+to parse the crontab instructions. See also
 [node-cron](https://github.com/ncb000gt/node-cron) for a similar project with
 a more traditional node.js callback approach.
 
-The main difference between this Library and 
-[node-cron](https://github.com/ncb000gt/node-cron) is that this library aims 
+The main difference between this Library and
+[node-cron](https://github.com/ncb000gt/node-cron) is that this library aims
 to implement the event listener pattern, to achieve capabilities found in the
 [Observer Pattern](http://en.wikipedia.org/wiki/Observer_pattern) and the
 [PUB/SUB Pattern](http://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern)
 
-This enables us to write highly decoupled and scalable code with
-lower complexity per function than traditional callback driven code. We can delegate
-responsibility for dealing with events to as many different subsystems as we 
+This enables you to write highly decoupled, functional and reactive code with
+lower complexity per function than callback driven code. You can delegate
+responsibility for dealing with events to as many different subsystems as we
 want, all listening to the same event notifications.
 
-### Install
+* [Install](#Install)
+* [Crontab syntax](#Crontab syntax)
+* [Usage](#Usage)
+  * [Creating an Object](#Creating an object)
+  * [Adding an event](#Adding an event)
+  * [Options](#Options)
+* [API](#API)
+* [Example](#Example)
+
+## Install
 ```bash
-npm install cron-emitter
+$ npm install --save cron-emitter
 ```
-  
-### Usage
-See [cron-parser](https://github.com/harrisiirak/cron-parser) for a simple 
-introduction to the crontab syntax. 
+
+## Crontab syntax
+See [cron-parser](https://github.com/harrisiirak/cron-parser) for a simple
+introduction to the crontab syntax.
 If you"re on a Linux or OS X computer type
 ```bash
-man crontab
+$ man crontab
 ```
 
-### Example
+## Usage
+
+### Creating an object
 ```javascript
-var CronEmitter = require("cron-emitter").CronEmitter;
+const CronEmitter = require('cron-emitter');
+const emitter     = new CronEmitter();
+```
 
-var emitter = new CronEmitter();
-var now     = new Date();
+### Adding an event
+```javascript
+emitter.add('0 */30 * * * *', 'every_thirty_minutes');
+```
+### Options
+options
 
-emitter.add("*/3  * * * * *", "every_three_seconds");
-emitter.add("*/10 * * * * *", "every_ten_seconds");
-emitter.add("0    * * * * *", "every_minute");
-emitter.add("* * * * * *",    "every_second_stop", {
-    endDate: new Date(now.getTime()+5500)
+## API
+
+### new CronEmitter()
+Return a new CronEmitter object
+
+<a name="CronEmitter+add"></a>
+
+### cronEmitter.add(crontab, name, options) ⇒ <code>Timeout</code>
+Adds a new event to the list of events to be emitted.
+
+**Kind**: instance method of <code>[CronEmitter](#CronEmitter)</code>
+**Returns**: <code>Timeout</code> - Timeout from the setTimeout function.
+**See**: https://www.npmjs.com/package/cron-parser
+
+| Param   | Type | Description |
+| ------- | ------------------- | --- |
+| crontab | <code>string</code> | the crontab declaration |
+| name    | <code>string</code> | the name of the event you want to emit. |
+| options | <code>object</code> | an object with options to cron-parser |
+
+<a name="CronEmitter+remove"></a>
+
+### cronEmitter.remove(name) ⇒ <code>boolean</code>
+Remove an event from the list of events
+
+**Kind**: instance method of <code>[CronEmitter](#CronEmitter)</code>
+**Returns**: <code>boolean</code> - true when successful
+**Throws**:
+
+- TypeError
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | of the event to remove. |
+
+<a name="CronEmitter+getEventList"></a>
+
+### cronEmitter.getEventList() ⇒ <code>object</code>
+Returns object with all the registered emitters
+
+**Kind**: instance method of <code>[CronEmitter](#CronEmitter)</code>
+**Returns**: <code>object</code> - the list of events.
+
+## Example
+
+#### Creating an object
+
+#### Adding events
+```javascript
+emitter.add('*/3  * * * * *', 'every_three_seconds');
+emitter.add('*/10 * * * * *', 'every_ten_seconds');
+emitter.add('0 * * * * *',    'every_minute');
+emitter.add('0 */5 * * * *',  'every_five_minutes');
+emitter.add('0 */30 * * * *', 'every_thirty_minutes');
+emitter.add('* * * * * *',    'every_second_stop', {
+  endDate: new Date(Date.now() + 10500)
+});
+```
+
+#### Handling the events
+```javascript
+const now  = () => (new Date()).toJSON();
+
+console.log(now(), "==> Done setting up events");
+
+emitter.on('ended', (name) => {
+  console.log(now(), `==> ENDED: event series "${name}" has ended.`);
+  switch (name) {
+  case 'every_second_stop':
+    emitter.add(
+      '*/2 * * * * *', 'every_two_seconds',
+      {endDate: new Date(Date.now() + 10500)}
+      );
+    break;
+  }
 });
 
-emitter.on("every_three_seconds", function() {
-    "use strict";
-    console.log("EVENT: Got every three seconds event.");
+emitter.on('every_three_seconds', () => {
+  console.log(now(), "==> EVENT: Got every three seconds event.");
 });
 
-emitter.on("every_ten_seconds", function() {
-    "use strict";
-    console.log("EVENT: Got ten seconds event.");
-
-    if (emitter.hasEvent("every_three_seconds")) {
-        console.log("  Stopping every_three_seconds.");
-        emitter.remove("every_three_seconds");
-    }
+emitter.on('every_ten_seconds', () => {
+  console.log(now(), "==> EVENT: Got ten seconds event.");
 });
 
-var counter = 0;
-emitter.on("every_second_stop", function() {
-    "use strict";
-    counter++;
-    console.log("EVENT: got every second event: ", counter);
+emitter.on('every_minute', () => {
+  console.log(now(), "==> EVENT: A minute has passed");
+});
+
+emitter.on('every_five_minutes', () => {
+  console.log(now(), "==> EVENT: Five minutes has passed");
+});
+
+emitter.on('every_thirty_minutes', () => {
+  console.log(now(), "==> EVENT: Thirty minutes has passed");
+});
+
+const increment = (counter = 0) => (counter + 1);
+let counter = 0;
+
+emitter.on("every_second_stop", () => {
+  counter = increment(counter);
+  console.log(now(), "==> EVENT: got every second event: ", counter);
+});
+
+emitter.on('every_two_seconds', () => {
+  console.log(now(), "==> EVENT: got every two seconds event.");
 });
 ```
