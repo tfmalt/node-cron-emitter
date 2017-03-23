@@ -47,7 +47,7 @@ $ npm install --save cron-emitter
 ## Crontab syntax
 See [cron-parser](https://github.com/harrisiirak/cron-parser) for a simple
 introduction to the crontab syntax.
-If you"re on a Linux or OS X computer type
+If you're on a Linux or OS X computer type
 ```bash
 $ man crontab
 ```
