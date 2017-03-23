@@ -85,13 +85,13 @@ Return a new CronEmitter object
 
 <a name="CronEmitter+add"></a>
 
-### cronEmitter.add(crontab, name, options) ⇒ <code>Timeout</code>
+### cronEmitter.add(crontab, name, options) ⇒ <code>CronEmitter</code>
 Adds a new event to the list of events to be emitted.
 CronEmitter exposes the same options as cron-parser to provide a
 start date and an end date for when events should be emitted:
 
 - **Kind**: instance method of <code>[CronEmitter](#CronEmitter)</code>
-- **Returns**: <code>Timeout</code> - Timeout from the setTimeout function.
+- **Returns**: <code>[CronEmitter](#CronEmitter)</code> - A reference to self.
 - **See**: https://www.npmjs.com/package/cron-parser
 
 | Param | Type | Description |
@@ -102,15 +102,13 @@ start date and an end date for when events should be emitted:
 
 <a name="CronEmitter+remove"></a>
 
-### cronEmitter.remove(name) ⇒ <code>boolean</code>
+### cronEmitter.remove(name) ⇒ <code>CronEmitter</code>
 Remove an event from the list of events
 
 - **Kind**: instance method of <code>[CronEmitter](#CronEmitter)</code>
-- **Returns**: <code>boolean</code> - true when successful
+- **Returns**: <code>[CronEmitter](#CronEmitter)</code> - self when successful
 - **Throws**:
-
   - TypeError
-
 
 | Param | Type | Description |
 | --- | --- | --- |
