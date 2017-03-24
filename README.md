@@ -6,8 +6,9 @@
 
 # cron-emitter
 
-This is an event emitter that uses crontab instructions to register the events
-to be emitted at regular intervals. This module uses
+This is an event emitter that uses crontab instructions to register events
+to be emitted at regular intervals, or at certain specific times in the future. 
+This module uses
 [cron-parser](https://github.com/harrisiirak/cron-parser)
 to parse the crontab instructions. See also
 [node-cron](https://github.com/ncb000gt/node-cron) for a similar project with
