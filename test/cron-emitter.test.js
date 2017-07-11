@@ -12,7 +12,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const expect = chai.expect;
 const events = require('events');
-const CronEmitter = require('../lib/cron-emitter');
+const CronEmitter = require('../build/cron-emitter');
 chai.should();
 
 describe('Create object', () => {
